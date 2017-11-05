@@ -1,0 +1,6 @@
+framework module Pods_RxCollapsableListsTests {
+  umbrella header "Pods-RxCollapsableListsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
