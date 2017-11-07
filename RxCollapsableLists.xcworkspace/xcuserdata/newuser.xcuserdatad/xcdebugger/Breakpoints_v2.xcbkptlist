@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxCollapsableLists/ViewController.swift"
+            timestampString = "531773609.567406"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "rxSetup()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxCollapsableLists/ViewController.swift"
+            timestampString = "531773609.567828"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "rxSetup()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (Swift.Array&lt;RxCollapsableLists.SectionOfCustomData&gt;, Swift.Dictionary&lt;RxCollapsableLists.SectionOfCustomData, Swift.Bool&gt;) -&gt; Swift.Array&lt;RxCollapsableLists.SectionOfCustomData&gt; in RxCollapsableLists.ViewController.rxSetup() -&gt; ()"
+                  moduleName = "RxCollapsableLists"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/newuser/Documents/Swift/RxCollapsableLists/RxCollapsableLists/ViewController.swift"
+                  timestampString = "531773609.672917"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (RxCollapsableLists.SectionOfCustomData) -&gt; RxCollapsableLists.SectionOfCustomData in closure #3 (Swift.Array&lt;RxCollapsableLists.SectionOfCustomData&gt;, Swift.Dictionary&lt;RxCollapsableLists.SectionOfCustomData, Swift.Bool&gt;) -&gt; Swift.Array&lt;RxCollapsableLists.SectionOfCustomData&gt; in RxCollapsableLists.ViewController.rxSetup() -&gt; ()"
+                  moduleName = "RxCollapsableLists"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/newuser/Documents/Swift/RxCollapsableLists/RxCollapsableLists/ViewController.swift"
+                  timestampString = "531773609.676314"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "34">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

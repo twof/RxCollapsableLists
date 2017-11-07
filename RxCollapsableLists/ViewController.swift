@@ -1,7 +1,8 @@
-åimport UIKit
+import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
+import RxGesture
 
 struct CustomData {
     var anInt: Int
@@ -12,6 +13,11 @@ struct CustomData {
 struct SectionOfCustomData {
     var header: String
     var items: [Item]
+    
+    init(header: String, items: [Item]) {
+        self.header = header
+        self.items = items
+    }
 }
 
 extension SectionOfCustomData: SectionModelType {
@@ -23,6 +29,16 @@ extension SectionOfCustomData: SectionModelType {
     }
 }
 
+extension SectionOfCustomData: Hashable {
+    var hashValue: Int {
+        return self.header.hashValue
+    }
+
+    static func ==(lhs: SectionOfCustomData, rhs: SectionOfCustomData) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
 class ViewController: UIViewController {
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -31,6 +47,9 @@ class ViewController: UIViewController {
     }()
     
     let disposeBag = DisposeBag()
+    
+    let collapsed = Variable<[SectionOfCustomData: Bool]>([:])
+    var datasource: RxTableViewSectionedReloadDataSource<SectionOfCustomData>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,30 +67,41 @@ class ViewController: UIViewController {
     }
     
     func rxSetup() {
+        let sections = [
+            SectionOfCustomData(header: "First section", items: [CustomData(anInt: 0, aString: "zero", aCGPoint: CGPoint.zero), CustomData(anInt: 1, aString: "one", aCGPoint: CGPoint(x: 1, y: 1)) ]),
+            SectionOfCustomData(header: "Second section", items: [CustomData(anInt: 2, aString: "two", aCGPoint: CGPoint(x: 2, y: 2)), CustomData(anInt: 3, aString: "three", aCGPoint: CGPoint(x: 3, y: 3)) ])
+        ]
+        
+        collapsed.value = sections.reduce(into: [:], { $0[$1] = false })
+        
         let configureCell = { (ds: TableViewSectionedDataSource<SectionOfCustomData>, tv: UITableView, ip: IndexPath, item: SectionOfCustomData.Item) -> UITableViewCell in
             let cell = tv.dequeueReusableCell(withIdentifier: "Cell", for: ip)
             cell.textLabel?.text = "Item \(item.anInt): \(item.aString) - \(item.aCGPoint.x):\(item.aCGPoint.y)"
             return cell
         }
       
-        let datasource = RxTableViewSectionedReloadDataSource<SectionOfCustomData>(configureCell: configureCell)
+        self.datasource = RxTableViewSectionedReloadDataSource<SectionOfCustomData>(configureCell: configureCell)
+       
+        let sectionsObservable = Observable.just(sections)
         
-        datasource.titleForHeaderInSection = { ds, index in
-            return ds.sectionModels[index].header
-        }
+        let collapsedSectionObservable = Observable.combineLatest(sectionsObservable, collapsed.asObservable())
+            .map({ (sections, collapsedDS) -> [SectionOfCustomData] in
+          
+            return sections.map({ (aSection) -> SectionOfCustomData in
+                guard let isCollapsed = collapsedDS[aSection] else {return aSection}
+                return !isCollapsed ? aSection : SectionOfCustomData(original: aSection, items: [])
+            })
+        })
         
-        let sections = [
-            SectionOfCustomData(header: "First section", items: [CustomData(anInt: 0, aString: "zero", aCGPoint: CGPoint.zero), CustomData(anInt: 1, aString: "one", aCGPoint: CGPoint(x: 1, y: 1)) ]),
-            SectionOfCustomData(header: "Second section", items: [CustomData(anInt: 2, aString: "two", aCGPoint: CGPoint(x: 2, y: 2)), CustomData(anInt: 3, aString: "three", aCGPoint: CGPoint(x: 3, y: 3)) ])
-        ]
-        
-        Observable.just(sections)
-            .bind(to: tableView.rx.items(dataSource: datasource))
+        collapsedSectionObservable
+            .bind(to: tableView.rx.items(dataSource: datasource!))
             .disposed(by: disposeBag)
     }
     
     func setupViews() {
+        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(CustomHeaderView.self, forHeaderFooterViewReuseIdentifier: CustomHeaderView.identifier)
         self.view.addSubview(tableView)
     }
     
@@ -92,11 +122,25 @@ class ViewController: UIViewController {
 
 
 extension ViewController: UITableViewDelegate {
-    class CustomHeader: UITableViewHeaderFooterView {
-        
-    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        <#code#>
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CustomHeaderView.identifier)
+        guard let header = view as? CustomHeaderView else {
+            assertionFailure("Expected a CustomHeaderView.")
+            return nil
+        }
+        header.titleLabel.text = "hello"
+        
+        guard let item = self.datasource?[section],
+            let isCollapsed = self.collapsed.value[item] else { return header }
+        
+        header.titleLabel.text = item.header
+        
+        header.rx.tapGesture().when(.recognized).subscribe({ _ in
+            self.collapsed.value[item] = !isCollapsed
+        }).disposed(by: disposeBag)
+        
+        return header
     }
 }
 

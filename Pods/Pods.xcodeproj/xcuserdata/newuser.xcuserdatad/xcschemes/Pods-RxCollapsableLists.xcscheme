@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "36151C729BD98C7B2EA484BF310BD872"
+               BlueprintIdentifier = "3120B8909B2E10EF8D2DF5FD4A67913D"
                BuildableName = "Pods_RxCollapsableLists.framework"
                BlueprintName = "Pods-RxCollapsableLists"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "36151C729BD98C7B2EA484BF310BD872"
+            BlueprintIdentifier = "3120B8909B2E10EF8D2DF5FD4A67913D"
             BuildableName = "Pods_RxCollapsableLists.framework"
             BlueprintName = "Pods-RxCollapsableLists"
             ReferencedContainer = "container:Pods.xcodeproj">
